@@ -1,9 +1,11 @@
-const Home = () => {
+import Header from "@/components/header";
+
+const HomePage = () => {
   return (
     <div>
-      <h1>Sign In</h1>
+      <Header />
     </div>
   )
 }
 
-export default Home
+export default HomePage
