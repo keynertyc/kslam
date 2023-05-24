@@ -1,0 +1,89 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+model User {
+  id        Int       @id @default(autoincrement())
+  user_id   String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  ownedSlams Slam[]    @relation("OwnedSlams")
+  participatedSlams Slam[] @relation("ParticipatedSlams")
+  slamComments SlamComment[] @relation("UserToSlamComment")
+
+  @@index([user_id], name: "user_id")
+}
+
+model Question {
+  id        Int       @id @default(autoincrement())
+  name      String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Slam {
+  id          Int       @id @default(autoincrement())
+  owner_id    Int
+  user_id     Int
+  completedAt DateTime
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  owner   User     @relation("OwnedSlams", fields: [owner_id], references: [id])
+  user    User     @relation("ParticipatedSlams", fields: [user_id], references: [id])
+  details SlamDetails[]
+  comments SlamComment[]
+  urls    SlamURL[]
+
+  @@index([owner_id], name: "owner_id")
+  @@index([user_id], name: "user_id")
+}
+
+model SlamDetails {
+  id        Int      @id @default(autoincrement())
+  slam_id   Int
+  data      Json
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  slam Slam @relation(fields: [slam_id], references: [id])
+
+  @@index([slam_id], name: "slam_id")
+}
+
+model SlamComment {
+  id         Int       @id @default(autoincrement())
+  slam_id    Int
+  user_id    Int
+  comment    String
+  createdAt  DateTime  @default(now())
+  modifiedAt DateTime  @updatedAt
+
+  slam    Slam @relation(fields: [slam_id], references: [id])
+  user    User @relation("UserToSlamComment", fields: [user_id], references: [id])
+
+  @@index([slam_id], name: "slam_id")
+  @@index([user_id], name: "user_id")
+}
+
+model SlamURL {
+  id         Int       @id @default(autoincrement())
+  slam_id    Int
+  url        String
+  createdAt  DateTime  @default(now())
+  expiresAt  DateTime
+  updatedAt  DateTime  @updatedAt
+
+  slam    Slam @relation(fields: [slam_id], references: [id])
+
+  @@index([slam_id], name: "slam_id")
+}

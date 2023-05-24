@@ -21,7 +21,7 @@ const Header = () => {
         </nav>
         <SignedIn>
           <Link href="/dashboard">
-            Dashboard
+            Ir a Aplicación
           </Link>
           &nbsp;&nbsp;
           <UserButton />

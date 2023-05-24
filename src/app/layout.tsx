@@ -1,5 +1,6 @@
-import './globals.css'
+import '../styles/globals.css'
 import { ClerkProvider } from '@clerk/nextjs'
+import { esES } from '@clerk/localizations'
 
 export const metadata = {
   title: 'KSLAM',
@@ -12,7 +13,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <ClerkProvider>
+    <ClerkProvider localization={esES}>
       <html lang="en">
         <body>
           {children}
