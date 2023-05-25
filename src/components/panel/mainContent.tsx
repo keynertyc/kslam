@@ -2,12 +2,12 @@ import React from 'react';
 
 const MainContent = () => {
   return (
-    <div className="h-screen px-4 pb-24 overflow-auto md:px-6">
+    <div className="h-screen px-4 pb-24 mt-6 overflow-auto md:px-6">
       <h1 className="text-4xl font-semibold text-gray-800 dark:text-white">
-          Good afternoom, Charlie
+          SLAM
       </h1>
       <h2 className="text-gray-400 text-md">
-          Here&#x27;s what&#x27;s happening with your ambassador account today.
+          Diviértete junto a tus amigos en el clásico juego.
       </h2>
       <div className="grid grid-cols-1 gap-4 my-4 md:grid-cols-2 lg:grid-cols-3">
           <div className="w-full">
