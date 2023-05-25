@@ -19,7 +19,7 @@ const Header = () => {
           <a className="mr-5 hover:text-gray-900">Tendencia</a>
           <a className="mr-5 hover:text-gray-900">Contacto</a>
         </nav>
-        <div className="flex items-center ml-auto">
+        <div className="flex items-center ml-auto md:ml-0">
           <SignedIn>
             <Link href="/dashboard" className="hidden md:inline">
               Ir a Aplicación
