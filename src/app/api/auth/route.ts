@@ -1,32 +1,24 @@
 import { prisma } from "@/lib/db"
 import { NextResponse } from 'next/server'
-// import { auth } from '@clerk/nextjs'
+import { clerkClient } from '@clerk/nextjs'
 
 export async function POST(request: Request) {
-  // Commented out because it is handle by middleware.ts publicRoutes
-  // const { userId: authUserId } = auth()
-  
-  // if(!authUserId){
-  //   return new Response("Unauthorized", { status: 401 })
-  // }
-
   const { userId } = await request.json()
 
-  let user = await prisma.user.findUnique({
+  const { firstName, lastName } = await clerkClient.users.getUser(userId)
+
+  let user = await prisma.user.upsert({
     where: {
-      user_id: userId,
+      user_id: userId
     },
+    update: {
+      name: `${firstName} ${lastName}`
+    },
+    create: {
+      user_id: userId,
+      name: `${firstName} ${lastName}`
+    }
   })
-
-  if (!user) {
-    user = await prisma.user.create({
-      data: {
-        user_id: userId,
-      },
-    })
-
-    console.log(user)
-  }
 
   return NextResponse.json(user)
 }
