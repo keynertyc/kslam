@@ -35,7 +35,7 @@ model Slam {
   id          Int       @id @default(autoincrement())
   owner_id    Int
   user_id     Int
-  completedAt DateTime
+  completedAt DateTime?
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
 
@@ -44,6 +44,7 @@ model Slam {
   details SlamDetails[]
   comments SlamComment[]
   urls    SlamURL[]
+  status String   @default("pending")
 
   @@index([owner_id], name: "owner_id")
   @@index([user_id], name: "user_id")
