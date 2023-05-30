@@ -8,7 +8,7 @@ const MainContent = () => {
   return (
     <div className="flex flex-col items-center justify-center h-screen gap-2 md:hidden">
       <SignedIn>
-        <button className="w-2/3 h-24 text-2xl text-white bg-indigo-500 rounded-lg" onClick={() => router.push('/dashboard')}>
+        <button className="w-2/3 h-24 text-2xl text-white bg-indigo-500 rounded-lg" onClick={() => router.push('/panel')}>
           Ir a Aplicación
         </button>
       </SignedIn>

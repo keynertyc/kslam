@@ -25,7 +25,7 @@ const [isMenuOpen, setIsMenuOpen] = useState(false)
                 </svg>
             </button>
         </div>
-        <Link href="/dashboard" className="md:hidden">
+        <Link href="/panel" className="md:hidden">
           <div className="flex items-center font-medium text-gray-900 title-font md:mb-0">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="w-10 h-10 p-2 text-white bg-indigo-500 rounded-full" viewBox="0 0 24 24">
               <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
@@ -50,7 +50,7 @@ const [isMenuOpen, setIsMenuOpen] = useState(false)
           </button>
           <ul className="flex flex-col items-center justify-center h-full space-y-6 text-white">
             <li>
-              <Link href="/dashboard" className="text-2xl text-white" onClick={handleLinkClick}>
+              <Link href="/panel" className="text-2xl text-white" onClick={handleLinkClick}>
                 Inicio
               </Link>
             </li>

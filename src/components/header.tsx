@@ -21,7 +21,7 @@ const Header = () => {
         </nav>
         <div className="flex items-center ml-auto md:ml-0">
           <SignedIn>
-            <Link href="/dashboard" className="hidden md:inline">
+            <Link href="/panel" className="hidden md:inline">
               Ir a Aplicación
             </Link>
             &nbsp;&nbsp;
