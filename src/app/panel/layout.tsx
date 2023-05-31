@@ -5,7 +5,7 @@ import Sidebar from "@/components/panel/sidebar";
 export default function PanelLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: React.ReactNode
 }) {
   return (
     <main className="relative h-screen overflow-hidden bg-gray-100 dark:bg-gray-800">
