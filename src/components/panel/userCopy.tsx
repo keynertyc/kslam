@@ -6,18 +6,19 @@ import { useRef, useState } from "react";
 const UserCopy = () => {
   const { user } = useUser()
 
-  const [copied, setCopied] = useState(false)
+  const [_, setCopied] = useState<boolean>(false)
   const userRef = useRef<HTMLSpanElement>(null);
   
   const handleCopy = () => {
     if (userRef.current) {
       const textToCopy = userRef.current.textContent || ''
+      
       navigator.clipboard.writeText(textToCopy)
       .then(() => {
-          setCopied(true)
+        setCopied(true)
       })
       .catch((error) => {
-          // console.error('Failed to copy text:', error)
+        // console.error('Failed to copy text:', error)
       })
     }
   }

@@ -1,30 +1,39 @@
 import { prisma } from '@/lib/db'
+import { Question } from '@prisma/client'
 import { Button } from '../ui/button'
-// import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 
-const getSlamQuestions = async () => {
-  const questions = await prisma.question.findMany()
+const getSlamQuestions = async (): Promise<Question[]> => {
+  const questions: Question[] = await prisma.question.findMany()
 
   return questions
 }
 
-const SlamForm = async ({ slamId }) => {
+interface SlamFormProps {
+  slamId: number
+}
+
+const SlamForm = async ({ slamId }: SlamFormProps) => {
   const slamQuestions = await getSlamQuestions()
 
   const answerSlam = async (formData: FormData) => {
     'use server'
-    const answers = Array.from(formData.entries())
-    .filter(([key]) => key.startsWith('id['))
-    .reduce((result, [key, value]) => {
-      const nameKey = key.match(/\[(\d+)\]/)[1]
-      result[nameKey] = value
-      return result
-    }, {})
+
+    const answers: { [key: string]: string } = Array
+      .from(formData.entries())
+      .filter(([key]) => key.startsWith('id['))
+      .reduce((result, [key, value]) => {
+        const matchResult = key.match(/\[(\d+)\]/)
+        if (matchResult && matchResult[1]) {
+          const nameKey = matchResult[1]
+          result[nameKey] = value.toString()
+        }
+        return result;
+      }, {} as { [key: string]: string })
 
     await prisma.slam.update({
       where: {
-        id: parseInt(slamId)
+        id: slamId
       },
       data: {
         completedAt: new Date(),
@@ -35,16 +44,14 @@ const SlamForm = async ({ slamId }) => {
     await prisma.slamDetails.create(
       {
         data: {
-          slam_id: parseInt(slamId),
+          slam_id: slamId,
           data: answers
         }
       }
     )
 
-    // revalidatePath(`/panel`)
     redirect(`/panel`)
   }
-
 
   return (
     <div className="w-full">
@@ -54,12 +61,12 @@ const SlamForm = async ({ slamId }) => {
         </p>
         <div className="mt-10 dark:text-white">
           <form action={answerSlam}>
-            { slamQuestions.map(question => (
-              <div className="flex flex-col justify-between pb-2 mb-2 text-sm border-b border-gray-200 sm:space-x-12" key={question.id}>
+            { slamQuestions.map(({ id, name }: { id: number, name: string }) => (
+              <div className="flex flex-col justify-between pb-2 mb-2 text-sm border-b border-gray-200 sm:space-x-12" key={ id }>
                 <p className="flex">
-                  {question.id}.- { question.name }
+                  { id }.- { name }
                 </p>
-                <input type="text" name={`id[${question.id}]`} className="flex w-full px-4 py-2 text-sm border border-gray-200 rounded-md focus:outline-none focus:border-sky-500" />
+                <input type="text" name={`id[${id}]`} className="flex w-full px-4 py-2 text-sm border border-gray-200 rounded-md focus:outline-none focus:border-sky-500" />
               </div>
             ))}
 

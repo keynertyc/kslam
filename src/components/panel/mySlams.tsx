@@ -11,11 +11,16 @@ import {
 } from "@/components/ui/alert-dialog"
 import { Button } from "@/components/ui/button"
 import { prisma } from '@/lib/db'
-
-// import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
+import { Slam, User } from '@prisma/client'
 
-const getMySlams = async (userId: string) => {
+interface MySlamsWithRelation extends User {
+  ownedSlams: (Slam & { 
+    user: User 
+  })[]
+}
+
+const getMySlams = async (userId: string): Promise<MySlamsWithRelation> => {
   const userWithSlams = await prisma.user.findUnique({
     where: {
       user_id: userId
@@ -31,21 +36,25 @@ const getMySlams = async (userId: string) => {
       }
     }
   })
+
+  if (!userWithSlams) {
+    throw new Error(`User not found for userId: ${userId}`)
+  }
     
-  return userWithSlams
+  return userWithSlams as MySlamsWithRelation
 }
 
 const MySlams = async () => {
   const { userId: ownerId } = auth()
 
-  const userWithSlams = await getMySlams(ownerId)
+  const userWithSlams = await getMySlams(ownerId as string)
 
   const sendInvitation = async (formData: FormData) => {
     'use server'
-    const userId = formData.get('user_id')
+    const userId = formData.get('user_id')?.toString() as unknown as string
 
     const owner = await prisma.user.findUnique({
-      where: { user_id: ownerId }
+      where: { user_id: ownerId as string }
     })
 
     const user = await prisma.user.findUnique({
@@ -76,7 +85,7 @@ const MySlams = async () => {
   const removeSlam = async (formData: FormData) => {
     'use server'
 
-    const slamId = formData.get('slam_id')
+    const slamId: number = formData.get('slam_id')?.toString() as unknown as number
 
     await prisma.slamDetails.deleteMany({
       where: {
@@ -90,7 +99,6 @@ const MySlams = async () => {
       }
     })
 
-    // revalidatePath(`/panel`)
     redirect(`/panel`)
   }
 

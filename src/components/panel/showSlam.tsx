@@ -1,17 +1,24 @@
 import { prisma } from '@/lib/db'
+import { Question, SlamDetails, Slam, User } from '@prisma/client'
 import dayjs from 'dayjs'
 import 'dayjs/locale/es'
 
-const getSlamQuestions = async () => {
-  const questions = await prisma.question.findMany()
+const getSlamQuestions = async (): Promise<Question[]> => {
+  const questions: Question[] = await prisma.question.findMany()
 
   return questions
 }
 
-const getSlamDetails = async ({ slamId }) => {
+interface SlamDetailsWithRelations extends SlamDetails {
+  slam: Slam & {
+    user: User
+  }
+}
+
+const getSlamDetails = async (slamId: number): Promise<SlamDetailsWithRelations> => {
   const details = await prisma.slamDetails.findFirst({
     where: {
-      slam_id: parseInt(slamId)
+      slam_id: slamId
     },
     include: {
       slam: {
@@ -22,33 +29,45 @@ const getSlamDetails = async ({ slamId }) => {
     }
   })
 
-  return details
+  if (!details) {
+    throw new Error(`Slam details not found for slamId: ${slamId}`);
+  }
+
+  return details as SlamDetailsWithRelations
 }
 
-const ShowSlam = async ({ slamId }) => {
-  const slamQuestions = await getSlamQuestions()
-  const slamDetails = await getSlamDetails({ slamId })
+interface ShowSlamProps {
+  slamId: number
+}
 
-  const slamAnswers = slamDetails?.data
+interface SlamAnswers {
+  [key: number]: string
+}
+
+const ShowSlam = async ({ slamId }: ShowSlamProps) => {
+  const slamQuestions: Question[] = await getSlamQuestions()
+  const slamDetails = await getSlamDetails(slamId)
+
+  const slamAnswers: SlamAnswers = slamDetails.data as SlamAnswers
 
   return (
     <div className="w-full">
       <div className="relative w-full px-4 py-6 bg-white shadow-lg dark:bg-gray-700">
         <p className="text-sm font-semibold text-gray-700 border-b border-gray-200 w-max dark:text-white">
-          Slam de { slamDetails?.slam.user.name }
+          Slam de { slamDetails.slam.user.name }
         </p>
         <p className="text-sm font-semibold text-gray-700 w-max dark:text-white">
-          { dayjs(slamDetails?.createdAt.toString()).locale('es').format('dddd, D MMMM YYYY hh:mmA') }
+          { dayjs(slamDetails.createdAt.toString()).locale('es').format('dddd, D MMMM YYYY hh:mmA') }
         </p>
         <div className="mt-10 dark:text-white">
-          { slamQuestions.map(question => (
-            <div className="flex flex-col justify-between pb-2 mb-2 text-sm border-b border-gray-200 sm:space-x-12" key={question.id}>
+          { slamQuestions.map(({ id, name }: { id: number, name: string })  => (
+            <div className="flex flex-col justify-between pb-2 mb-2 text-sm border-b border-gray-200 sm:space-x-12" key={id}>
               <p className="flex">
-                {question.id}.- { question.name }
+                {id}.- { name }
               </p>
-              { slamAnswers && slamAnswers[question.id] && (
+              { slamAnswers && slamAnswers[id] && (
                 <p className="flex">
-                  { slamAnswers[question.id] }
+                  { slamAnswers[id] }
                 </p>
               )}
             </div>

@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 
 const Header = () => {
 
-const [isMenuOpen, setIsMenuOpen] = useState(false)
+const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false)
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);

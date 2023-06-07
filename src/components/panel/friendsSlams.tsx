@@ -2,9 +2,16 @@
 import { auth } from '@clerk/nextjs';
 import { Badge } from '@/components/ui/badge'
 import { prisma } from '@/lib/db'
+import { User, Slam } from '@prisma/client'
 import Link from 'next/link';
 
-const getFriendsSlams = async (userId: string) => {
+interface FriendsSlamsWithRelation extends User {
+  participatedSlams: (Slam & { 
+    owner: User 
+  })[]
+}
+
+const getFriendsSlams = async (userId: string): Promise<FriendsSlamsWithRelation> => {
   const userWithSlams = await prisma.user.findUnique({
     where: {
       user_id: userId
@@ -17,15 +24,19 @@ const getFriendsSlams = async (userId: string) => {
       }
     }
   })
+
+  if (!userWithSlams) {
+    throw new Error(`User not found for userId: ${userId}`);
+  }
     
-  return userWithSlams
+  return userWithSlams as FriendsSlamsWithRelation
 }
 
 const FriendsSlams = async () => {
   
   const { userId } = auth()
 
-  const userWithSlams = await getFriendsSlams(userId)
+  const userWithSlams: FriendsSlamsWithRelation = await getFriendsSlams(userId as string)
 
   return (
     <div className="w-full">
@@ -35,25 +46,25 @@ const FriendsSlams = async () => {
         </p>
         <p className="text-xs text-gray-400">Completados por mí</p>
         <div className="mt-10 dark:text-white">
-          { userWithSlams.participatedSlams.map(slam => slam.status == 'pending'? 
+          { userWithSlams.participatedSlams.map(({ id, status, owner }: { id: number, status: string, owner: User }) => status == 'pending'? 
             (
-              <Link href={ `/panel/friends-slams/${slam.id}` } className="flex items-center justify-between pb-2 mb-2 text-sm border-b border-gray-200 sm:space-x-12" key={slam.id}>
+              <Link href={ `/panel/friends-slams/${id}` } className="flex items-center justify-between pb-2 mb-2 text-sm border-b border-gray-200 sm:space-x-12" key={ id }>
                 <p>
-                  { slam.owner.name }
+                  { owner.name }
                 </p>
                 <Badge variant="destructive">{
-                  slam.status == 'pending'? 'pendiente' : 'completado'
+                  status == 'pending'? 'pendiente' : 'completado'
                 }</Badge>
               </Link>
             )
             :
             (
-              <div className="flex items-center justify-between pb-2 mb-2 text-sm border-b border-gray-200 sm:space-x-12" key={slam.id}>
+              <div className="flex items-center justify-between pb-2 mb-2 text-sm border-b border-gray-200 sm:space-x-12" key={ id }>
                 <p>
-                  { slam.owner.name }
+                  { owner.name }
                 </p>
-                <Badge variant="destructive">{
-                  slam.status == 'pending'? 'pendiente' : 'completado'
+                <Badge variant={ status == 'pending'? 'destructive' : 'default' }>{
+                  status == 'pending'? 'pendiente' : 'completado'
                 }</Badge>
               </div>
             )
