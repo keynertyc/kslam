@@ -35,16 +35,29 @@ const FriendsSlams = async () => {
         </p>
         <p className="text-xs text-gray-400">Completados por mí</p>
         <div className="mt-10 dark:text-white">
-          { userWithSlams.participatedSlams.map(slam => (
-            <Link href={`/panel/friends-slams/${slam.id}`} className="flex items-center justify-between pb-2 mb-2 text-sm border-b border-gray-200 sm:space-x-12" key={slam.id}>
-              <p>
-                { slam.owner.name }
-              </p>
-              <Badge variant="destructive">{
-                slam.status == 'pending'? 'pendiente' : 'completado'
-              }</Badge>
-            </Link>
-          ))}
+          { userWithSlams.participatedSlams.map(slam => slam.status == 'pending'? 
+            (
+              <Link href={ `/panel/friends-slams/${slam.id}` } className="flex items-center justify-between pb-2 mb-2 text-sm border-b border-gray-200 sm:space-x-12" key={slam.id}>
+                <p>
+                  { slam.owner.name }
+                </p>
+                <Badge variant="destructive">{
+                  slam.status == 'pending'? 'pendiente' : 'completado'
+                }</Badge>
+              </Link>
+            )
+            :
+            (
+              <div className="flex items-center justify-between pb-2 mb-2 text-sm border-b border-gray-200 sm:space-x-12" key={slam.id}>
+                <p>
+                  { slam.owner.name }
+                </p>
+                <Badge variant="destructive">{
+                  slam.status == 'pending'? 'pendiente' : 'completado'
+                }</Badge>
+              </div>
+            )
+          )}
         </div>
       </div>
     </div>

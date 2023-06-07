@@ -35,8 +35,7 @@ const [isMenuOpen, setIsMenuOpen] = useState(false)
         </Link>
         <div className="relative z-20 flex flex-col justify-center h-full px-3 md:w-full">
             <div className="relative flex items-center justify-end w-full p-1 space-x-4">
-                <span className="w-1 h-8 bg-gray-200 rounded-lg">
-                </span>
+                <span className="w-1 h-8 bg-gray-200 rounded-lg"></span>
                 <UserButton />
             </div>
         </div>
@@ -54,11 +53,11 @@ const [isMenuOpen, setIsMenuOpen] = useState(false)
                 Inicio
               </Link>
             </li>
-            <li>
-              <Link href="/slams" className="text-2xl text-white" onClick={handleLinkClick}>
+            {/* <li>
+              <Link href="#" className="text-2xl text-white" onClick={handleLinkClick}>
                 Slams
               </Link>
-            </li>
+            </li> */}
             <li>
               <Link href="/" className="text-2xl text-white">
                 Pagina Inicial
