@@ -3,16 +3,10 @@
 import { auth } from '@clerk/nextjs'
 import { Badge } from '@/components/ui/badge'
 import { prisma } from '@/lib/db'
-import { User, Slam } from '@prisma/client'
+import { User } from '@prisma/client'
 import Link from 'next/link';
 
-interface FriendsSlamsWithRelation extends User {
-  participatedSlams: (Slam & { 
-    owner: User 
-  })[]
-}
-
-const getFriendsSlams = async (userId: string): Promise<FriendsSlamsWithRelation> => {
+const getFriendsSlams = async (userId: string): Promise<IFriendsSlamsWithRelation> => {
   const userWithSlams = await prisma.user.findUnique({
     where: {
       user_id: userId
@@ -30,14 +24,14 @@ const getFriendsSlams = async (userId: string): Promise<FriendsSlamsWithRelation
     throw new Error(`User not found for userId: ${userId}`);
   }
     
-  return userWithSlams as FriendsSlamsWithRelation
+  return userWithSlams as IFriendsSlamsWithRelation
 }
 
 const FriendsSlams = async () => {
   
   const { userId } = auth()
 
-  const userWithSlams: FriendsSlamsWithRelation = await getFriendsSlams(userId as string)
+  const userWithSlams: IFriendsSlamsWithRelation = await getFriendsSlams(userId as string)
 
   return (
     <div className="w-full">

@@ -9,13 +9,7 @@ const getSlamQuestions = async (): Promise<Question[]> => {
   return questions
 }
 
-interface SlamDetailsWithRelations extends SlamDetails {
-  slam: Slam & {
-    user: User
-  }
-}
-
-const getSlamDetails = async (slamId: number): Promise<SlamDetailsWithRelations> => {
+const getSlamDetails = async (slamId: number): Promise<ISlamDetailsWithRelations> => {
   const details = await prisma.slamDetails.findFirst({
     where: {
       slam_id: slamId
@@ -33,22 +27,18 @@ const getSlamDetails = async (slamId: number): Promise<SlamDetailsWithRelations>
     throw new Error(`Slam details not found for slamId: ${slamId}`);
   }
 
-  return details as SlamDetailsWithRelations
+  return details as ISlamDetailsWithRelations
 }
 
 interface ShowSlamProps {
   slamId: number
 }
 
-interface SlamAnswers {
-  [key: number]: string
-}
-
 const ShowSlam = async ({ slamId }: ShowSlamProps) => {
   const slamQuestions: Question[] = await getSlamQuestions()
   const slamDetails = await getSlamDetails(slamId)
 
-  const slamAnswers: SlamAnswers = slamDetails.data as SlamAnswers
+  const slamAnswers: ISlamAnswers = slamDetails.data as ISlamAnswers
 
   return (
     <div className="w-full">

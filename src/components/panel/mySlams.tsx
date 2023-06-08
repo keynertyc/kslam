@@ -2,18 +2,11 @@ import { prisma } from '@/lib/db'
 import { auth } from '@clerk/nextjs'
 import { Eye } from 'lucide-react'
 import { redirect } from 'next/navigation'
-import { Slam, User } from '@prisma/client'
 import Link from 'next/link'
 import ModalRemoveSlam from './modalRemoveSlam'
 import ModalSlamInvitation from './modalSlamInvitation'
 
-interface MySlamsWithRelation extends User {
-  ownedSlams: (Slam & { 
-    user: User 
-  })[]
-}
-
-const getMySlams = async (userId: string): Promise<MySlamsWithRelation> => {
+const getMySlams = async (userId: string): Promise<IMySlamsWithRelation> => {
   const userWithSlams = await prisma.user.findUnique({
     where: {
       user_id: userId
@@ -34,7 +27,7 @@ const getMySlams = async (userId: string): Promise<MySlamsWithRelation> => {
     throw new Error(`User not found for userId: ${userId}`)
   }
     
-  return userWithSlams as MySlamsWithRelation
+  return userWithSlams as IMySlamsWithRelation
 }
 
 const MySlams = async () => {
