@@ -1,6 +1,6 @@
+import { Button } from '../ui/button'
 import { prisma } from '@/lib/db'
 import { Question } from '@prisma/client'
-import { Button } from '../ui/button'
 import { redirect } from 'next/navigation'
 
 const getSlamQuestions = async (): Promise<Question[]> => {

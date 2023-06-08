@@ -1,18 +1,11 @@
-import { auth } from '@clerk/nextjs'
-import { Eye, Send, Trash2Icon } from 'lucide-react'
-import Link from 'next/link'
-import {
-  AlertDialog,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
-import { Button } from "@/components/ui/button"
 import { prisma } from '@/lib/db'
+import { auth } from '@clerk/nextjs'
+import { Eye } from 'lucide-react'
 import { redirect } from 'next/navigation'
 import { Slam, User } from '@prisma/client'
+import Link from 'next/link'
+import ModalRemoveSlam from './modalRemoveSlam'
+import ModalSlamInvitation from './modalSlamInvitation'
 
 interface MySlamsWithRelation extends User {
   ownedSlams: (Slam & { 
@@ -85,7 +78,7 @@ const MySlams = async () => {
   const removeSlam = async (formData: FormData) => {
     'use server'
 
-    const slamId: number = formData.get('slam_id')?.toString() as unknown as number
+    const slamId = parseInt(formData.get('slam_id')?.toString() as unknown as string)
 
     await prisma.slamDetails.deleteMany({
       where: {
@@ -112,27 +105,7 @@ const MySlams = async () => {
               </p>
               <p className="text-xs text-gray-400">Completados por mis amigos</p>
             </div>
-            <AlertDialog>
-              <AlertDialogTrigger asChild>
-                <Button className="flex items-center justify-center px-4 py-2 ml-auto rounded-md text-sky-500 bg-sky-100">
-                  <Send size={16} />
-                </Button>
-              </AlertDialogTrigger>
-              <AlertDialogContent>
-                <AlertDialogHeader>
-                  <AlertDialogTitle>Enviar invitación</AlertDialogTitle>
-                </AlertDialogHeader>
-                <form action={sendInvitation} className="flex flex-col gap-4">
-                  <label className="flex flex-col">
-                    <input type="text" name="user_id" className="px-4 py-2 border border-gray-300 rounded-md dark:bg-gray-800 dark:text-white" placeholder='Ingresa o Copia/Pega ID de Usuario' />
-                    <Button className="flex items-center justify-center px-4 py-2 mt-2 text-white">
-                        Enviar
-                    </Button>
-                    <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                  </label>
-                </form>
-              </AlertDialogContent>
-            </AlertDialog>
+            <ModalSlamInvitation sendInvitation={sendInvitation} />
           </div>
           <div className="mt-10 dark:text-white">
             { userWithSlams.ownedSlams.map(slam => (
@@ -144,27 +117,7 @@ const MySlams = async () => {
                   <Link href={`/panel/my-slams/${slam.id}`} className="flex items-center justify-center px-4 py-2 text-green-500 bg-green-100 rounded-md">
                     <Eye size={16} />
                   </Link>
-                  <AlertDialog>
-                    <AlertDialogTrigger asChild>
-                      <Button className="flex items-center justify-center px-4 py-2 text-red-500 bg-red-100 rounded-md">
-                        <Trash2Icon size={16} />
-                      </Button>
-                    </AlertDialogTrigger>
-                    <AlertDialogContent>
-                      <AlertDialogHeader>
-                        <AlertDialogTitle>¿Estás seguro?</AlertDialogTitle>
-                      </AlertDialogHeader>
-                      <form action={removeSlam} className="flex flex-col gap-4">
-                        <label className="flex flex-col">
-                          <input type="hidden" name="slam_id" value={slam.id} />
-                          <Button className="flex items-center justify-center px-4 py-2 mt-2 text-white">
-                            Confirmar
-                          </Button>
-                          <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                        </label>
-                      </form>
-                    </AlertDialogContent>
-                  </AlertDialog>
+                  <ModalRemoveSlam removeSlam={removeSlam} slamId={slam.id} />
                 </div>
               </div>
             ))}

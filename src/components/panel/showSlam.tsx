@@ -54,7 +54,7 @@ const ShowSlam = async ({ slamId }: ShowSlamProps) => {
     <div className="w-full">
       <div className="relative w-full px-4 py-6 bg-white shadow-lg dark:bg-gray-700">
         <p className="text-sm font-semibold text-gray-700 border-b border-gray-200 w-max dark:text-white">
-          Slam de { slamDetails.slam.user.name }
+          Completado por { slamDetails.slam.user.name }
         </p>
         <p className="text-sm font-semibold text-gray-700 w-max dark:text-white">
           { dayjs(slamDetails.createdAt.toString()).locale('es').format('dddd, D MMMM YYYY hh:mmA') }

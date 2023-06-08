@@ -1,18 +1,19 @@
 'use client'
-import { UserButton } from '@clerk/nextjs';
-import Link from 'next/link';
-import React, { useState } from 'react';
+
+import { UserButton } from '@clerk/nextjs'
+import { useState } from 'react'
+import Link from 'next/link'
 
 const Header = () => {
 
-const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false)
+  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false)
 
   const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
+    setIsMenuOpen(!isMenuOpen)
   }
 
   const handleLinkClick = () => {
-    setIsMenuOpen(false);
+    setIsMenuOpen(false)
   }
 
   return (
@@ -67,7 +68,7 @@ const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false)
         </div>
       )}
     </header>
-  );
-};
+  )
+}
 
-export default Header;
+export default Header

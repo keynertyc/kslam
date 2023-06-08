@@ -1,5 +1,6 @@
 'use server'
-import { auth } from '@clerk/nextjs';
+
+import { auth } from '@clerk/nextjs'
 import { Badge } from '@/components/ui/badge'
 import { prisma } from '@/lib/db'
 import { User, Slam } from '@prisma/client'

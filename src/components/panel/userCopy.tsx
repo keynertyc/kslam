@@ -1,7 +1,8 @@
 'use client'
+
+import { useRef, useState } from "react"
 import { useUser } from '@clerk/nextjs'
 import { ClipboardCopy } from "lucide-react"
-import { useRef, useState } from "react";
 
 const UserCopy = () => {
   const { user } = useUser()

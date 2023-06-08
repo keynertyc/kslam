@@ -1,5 +1,5 @@
-import MySlams from './mySlams'
 import FriendsSlams from './friendsSlams'
+import MySlams from './mySlams'
 import UserCopy from './userCopy'
 
 const MainContent = () => {
