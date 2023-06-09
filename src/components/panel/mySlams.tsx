@@ -37,14 +37,14 @@ const MySlams = async () => {
 
   const sendInvitation = async (formData: FormData) => {
     'use server'
-    const userId = formData.get('user_id')?.toString() as unknown as string
+    const username = formData.get('username')?.toString() as unknown as string
 
     const owner = await prisma.user.findUnique({
       where: { user_id: ownerId as string }
     })
 
     const user = await prisma.user.findUnique({
-      where: { user_id: userId }
+      where: { username }
     })
 
     if (!user || !owner) {
@@ -64,7 +64,6 @@ const MySlams = async () => {
       }
     })
 
-    // revalidatePath(`/panel`);
     redirect(`/panel`)
   }
 

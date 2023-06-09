@@ -16,6 +16,7 @@ export async function POST(request: Request) {
     },
     create: {
       user_id: userId,
+      username: userId,
       name: `${firstName} ${lastName}`
     }
   })

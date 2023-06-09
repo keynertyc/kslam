@@ -5,6 +5,7 @@ import { esES } from '@clerk/localizations'
 export const metadata = {
   title: 'KSLAM',
   description: 'El Clásico juego de Adolecentes',
+  viewport: 'width=device-width,user-scalable=no'
 }
 
 export default function RootLayout({

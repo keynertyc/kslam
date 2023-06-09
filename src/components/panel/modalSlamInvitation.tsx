@@ -20,7 +20,7 @@ const ModalSlamInvitation = ({ sendInvitation }: ModalInvitationProps) => {
         </AlertDialogHeader>
         <form action={sendInvitation} className="flex flex-col gap-4">
           <label className="flex flex-col">
-            <input type="text" name="user_id" className="px-4 py-2 border border-gray-300 rounded-md dark:bg-gray-800 dark:text-white" placeholder='Ingresa o Copia/Pega ID de Usuario' />
+            <input type="text" name="username" className="px-4 py-2 border border-gray-300 rounded-md dark:bg-gray-800 dark:text-white" placeholder='Ingresa el usuario de tu amigo' />
             <Button className="flex items-center justify-center px-4 py-2 mt-2 text-white">
                 Enviar
             </Button>
