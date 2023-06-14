@@ -1,6 +1,7 @@
 import '../styles/globals.css'
 import { ClerkProvider } from '@clerk/nextjs'
 import { esES } from '@clerk/localizations'
+import DeviceDetect from '@/components/deviceDetect'
 
 export const metadata = {
   title: 'KSLAM',
@@ -17,6 +18,7 @@ export default function RootLayout({
     <ClerkProvider localization={esES}>
       <html lang="en">
         <body className="bg-cover bg-slam-pattern">
+          <DeviceDetect />
           {children}
         </body>
       </html>

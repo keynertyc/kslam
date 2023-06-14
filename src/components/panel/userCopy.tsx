@@ -12,8 +12,9 @@ interface UserCopyProps {
 const UserCopy = ({ username }: UserCopyProps) => {
   const { user } = useUser()
 
-  const [_, setCopied] = useState<boolean>(false)
+  const [copied, setCopied] = useState<boolean>(false)
   const userRef = useRef<HTMLSpanElement>(null)
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null)
 
   const [currentUsername, setCurrentUsername] = useState<string>(username)
   const [isEditingUsername, setIsEditingUsername] = useState<boolean>(false)
@@ -39,18 +40,42 @@ const UserCopy = ({ username }: UserCopyProps) => {
       // console.error(error)
     })
   }
+
+  const handleTimeOut = () => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current)
+    }
+    timeoutRef.current = setTimeout(() => {
+      setCopied(false)
+    }, 3000)
+  }
+
   
   const handleCopy = () => {
     if (userRef.current) {
       const textToCopy = userRef.current.textContent || ''
-      
-      navigator.clipboard.writeText(textToCopy)
-      .then(() => {
+
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(textToCopy)
+        .then(() => {
+          setCopied(true)
+          handleTimeOut()
+        })
+        .catch((error) => {
+          // console.error('Failed to copy text:', error)
+        })
+      } else {
+        const textArea = document.createElement('textarea')
+        textArea.value = textToCopy
+        document.body.appendChild(textArea)
+        textArea.select()
+        document.execCommand('copy')
+        document.body.removeChild(textArea)
+
         setCopied(true)
-      })
-      .catch((error) => {
-        // console.error('Failed to copy text:', error)
-      })
+        handleTimeOut()
+      }
+    
     }
   }
   
@@ -63,9 +88,16 @@ const UserCopy = ({ username }: UserCopyProps) => {
         ) : (
           <EditUsername setUsername={setCurrentUsername} changeUsername={handleEditUsername} username={currentUsername} />
         )}
-        <button className="flex items-center justify-center px-4 py-2 text-indigo-500 bg-indigo-100 rounded-md" onClick={handleCopy}>
-          <ClipboardCopy size={16} />
-        </button>
+        <div className="relative">
+          <button className="flex items-center justify-center px-4 py-2 text-indigo-500 bg-indigo-100 rounded-md" onClick={handleCopy}>
+            <ClipboardCopy size={16} />
+          </button>
+          {copied && (
+            <div className="absolute px-2 py-1 text-xs text-white transition-opacity duration-500 -translate-x-1/2 -translate-y-2 bg-indigo-600 rounded top-[-1.25rem] left-6 opacity-95">
+              Copiado
+            </div>
+          )}
+        </div>
         {
           !isEditingUsername && (
             <button className="flex items-center justify-center px-4 py-2 text-indigo-500 bg-indigo-100 rounded-md" onClick={ () => setIsEditingUsername(!isEditingUsername) }>
