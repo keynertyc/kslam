@@ -3,7 +3,7 @@ import { SignInButton, SignUpButton, SignedIn, SignedOut } from "@clerk/nextjs"
 import { useRouter } from 'next/navigation';
 import SlamLogo from '../../public/slam.svg'
 import Image from 'next/image'
-import { DoorOpen, DoorOpenIcon, KeyIcon, LogIn, PlayIcon, UserPlus2 } from "lucide-react";
+import { LogIn, PlayIcon, UserPlus2 } from "lucide-react";
 
 const MainContent = () => {
   const router = useRouter()
