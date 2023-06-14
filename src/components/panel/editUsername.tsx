@@ -16,7 +16,7 @@ const EditUsername = ({ setUsername, changeUsername, username }: EditUsernamePro
     <form className="flex flex-row gap-2">
       <input 
         type="text" 
-        className="p-2 w-full rounded-md border border-gray-300 dark:bg-gray-800 dark:text-white" 
+        className="w-full p-2 text-black border border-gray-300 rounded-md" 
         placeholder="Ingresa un nombre de usuario" 
         name={username} 
         value={username} 

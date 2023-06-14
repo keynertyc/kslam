@@ -35,7 +35,7 @@ export default authMiddleware({
           body: JSON.stringify({ userId }),
         })
       } catch (error) {
-        console.log(error)
+        // console.log(error)
       }
     }
   }

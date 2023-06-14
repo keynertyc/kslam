@@ -23,10 +23,10 @@ const MainContent = async () => {
 
   return (
     <div className="h-screen px-4 pb-24 mt-6 overflow-auto md:px-6">
-      <h1 className="text-4xl font-semibold text-gray-800 dark:text-white">
+      <h1 className="text-4xl font-semibold text-white">
         SLAM
       </h1>
-      <h2 className="text-gray-400 text-md">
+      <h2 className="text-white text-md">
         Diviértete junto a tus amigos en el clásico juego.
       </h2>
       <UserCopy username={username} />

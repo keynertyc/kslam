@@ -16,7 +16,7 @@ export default function RootLayout({
   return (
     <ClerkProvider localization={esES}>
       <html lang="en">
-        <body>
+        <body className="bg-cover bg-slam-pattern">
           {children}
         </body>
       </html>

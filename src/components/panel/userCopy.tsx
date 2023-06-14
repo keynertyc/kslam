@@ -55,9 +55,9 @@ const UserCopy = ({ username }: UserCopyProps) => {
   }
   
   return (
-    <div className="flex flex-col mt-6 text-xs">
-      <p>Usuario:</p>
-      <div className="flex flex-row gap-2 items-center">
+    <div className="flex flex-col mt-6 text-xs text-white">
+      <p className="mb-2 underline underline-offset-4">Usuario:</p>
+      <div className="flex flex-row items-center gap-2">
         { !isEditingUsername ? (
         <span className="font-bold" ref={userRef}>{currentUsername}</span>
         ) : (

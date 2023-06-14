@@ -79,6 +79,9 @@ module.exports = {
         'skyblue': '#87ceeb',
         'blue': '#0000ff',
       },
+      backgroundImage: {
+        'slam-pattern': "url('/bg.svg')",
+      }
     },
   },
   plugins: [require("tailwindcss-animate")],
