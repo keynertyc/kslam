@@ -31,7 +31,9 @@ const MainContent = async () => {
       </h2>
       <UserCopy username={username} />
       <div className="grid grid-cols-1 gap-4 my-4 md:grid-cols-2 lg:grid-cols-3">
+        {/* @ts-expect-error Server Component */}
         <MySlams />
+        {/* @ts-expect-error Server Component */}
         <FriendsSlams />
       </div>
     </div>
