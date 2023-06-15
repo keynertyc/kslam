@@ -6,7 +6,7 @@ interface FriendsSlamsPageProps {
   }
 }
 
-export const FriendsSlamsPage = ({ params }: FriendsSlamsPageProps) => {
+const FriendsSlamsPage = ({ params }: FriendsSlamsPageProps) => {
   const id: number = parseInt(params.id)
 
   return (
