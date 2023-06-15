@@ -2,7 +2,7 @@
 
 import { useRef, useState } from "react"
 import { useUser } from '@clerk/nextjs'
-import { ClipboardCopy, Edit2 } from "lucide-react"
+import { ClipboardCopy, Edit2, Share2Icon } from "lucide-react"
 import EditUsername from "./editUsername"
 
 interface UserCopyProps {
@@ -41,43 +41,59 @@ const UserCopy = ({ username }: UserCopyProps) => {
     })
   }
 
-  const handleTimeOut = () => {
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current)
-    }
-    timeoutRef.current = setTimeout(() => {
-      setCopied(false)
-    }, 3000)
-  }
+  // const handleTimeOut = () => {
+  //   if (timeoutRef.current) {
+  //     clearTimeout(timeoutRef.current)
+  //   }
+  //   timeoutRef.current = setTimeout(() => {
+  //     setCopied(false)
+  //   }, 3000)
+  // }
 
-  
-  const handleCopy = () => {
-    if (userRef.current) {
-      const textToCopy = userRef.current.textContent || ''
-
-      if (navigator.clipboard) {
-        navigator.clipboard.writeText(textToCopy)
+  const handleShare = () => {
+    if (navigator.share) {
+      navigator.share({
+        title: 'WebShare API Demo',
+        url: 'https://codepen.io/ayoisaiah/pen/YbNazJ'
+      })
         .then(() => {
-          setCopied(true)
-          handleTimeOut()
+          console.log("Shared successfully")
         })
         .catch((error) => {
-          // console.error('Failed to copy text:', error)
+          console.error("Failed to share:", error)
         })
-      } else {
-        const textArea = document.createElement('textarea')
-        textArea.value = textToCopy
-        document.body.appendChild(textArea)
-        textArea.select()
-        document.execCommand('copy')
-        document.body.removeChild(textArea)
-
-        setCopied(true)
-        handleTimeOut()
-      }
-    
+    } else {
+      console.log("Web Share API is not supported on this device.")
     }
-  }
+  }  
+  
+  // const handleCopy = () => {
+  //   if (userRef.current) {
+  //     const textToCopy = userRef.current.textContent || ''
+
+  //     if (navigator.clipboard) {
+  //       navigator.clipboard.writeText(textToCopy)
+  //       .then(() => {
+  //         setCopied(true)
+  //         handleTimeOut()
+  //       })
+  //       .catch((error) => {
+  //         // console.error('Failed to copy text:', error)
+  //       })
+  //     } else {
+  //       const textArea = document.createElement('textarea')
+  //       textArea.value = textToCopy
+  //       document.body.appendChild(textArea)
+  //       textArea.select()
+  //       document.execCommand('copy')
+  //       document.body.removeChild(textArea)
+
+  //       setCopied(true)
+  //       handleTimeOut()
+  //     }
+    
+  //   }
+  // }
   
   return (
     <div className="flex flex-col mt-6 text-xs text-white">
@@ -89,8 +105,8 @@ const UserCopy = ({ username }: UserCopyProps) => {
           <EditUsername setUsername={setCurrentUsername} changeUsername={handleEditUsername} username={currentUsername} />
         )}
         <div className="relative">
-          <button className="flex items-center justify-center px-4 py-2 text-indigo-500 bg-indigo-100 rounded-md" onClick={handleCopy}>
-            <ClipboardCopy size={16} />
+          <button className="flex items-center justify-center px-4 py-2 text-indigo-500 bg-indigo-100 rounded-md" onClick={handleShare}>
+            <Share2Icon size={16} />
           </button>
           {copied && (
             <div className="absolute px-2 py-1 text-xs text-white transition-opacity duration-500 -translate-x-1/2 -translate-y-2 bg-indigo-600 rounded top-[-1.25rem] left-6 opacity-95">
