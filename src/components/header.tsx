@@ -18,12 +18,12 @@ const Header = () => {
             />
           </div>
         </Link>
-        <nav className="flex-wrap items-center justify-center hidden text-base md:inline md:ml-auto md:mr-auto">
+        {/* <nav className="flex-wrap items-center justify-center hidden text-base md:inline md:ml-auto md:mr-auto">
           <a className="mr-5 hover:text-gray-900">Inicio</a>
           <a className="mr-5 hover:text-gray-900">Funcionamiento</a>
           <a className="mr-5 hover:text-gray-900">Tendencia</a>
           <a className="mr-5 hover:text-gray-900">Contacto</a>
-        </nav>
+        </nav> */}
         <div className="flex items-center ml-auto md:ml-0">
           <SignedIn>
             <Link href="/panel" className="hidden md:inline">
@@ -37,13 +37,13 @@ const Header = () => {
           <SignedOut>
             <SignInButton mode="modal">
               <button className="btn">
-                Sign in
+                Entrar
               </button>
             </SignInButton>
             &nbsp;&nbsp; / &nbsp;&nbsp;
             <SignUpButton mode="modal">
               <button className="btn">
-                Sign up
+                Crear cuenta
               </button>
             </SignUpButton>
           </SignedOut>

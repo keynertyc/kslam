@@ -13,7 +13,7 @@ const getBaseUrl = () => {
 const baseUrl = `${getBaseUrl()}`
 
 export default authMiddleware({
-  publicRoutes: ["/"],
+  publicRoutes: ["/", "/error"],
   afterAuth(auth, req, evt) {
     if (!auth.userId && !auth.isPublicRoute) {
       const signInUrl = new URL('/', req.url)
