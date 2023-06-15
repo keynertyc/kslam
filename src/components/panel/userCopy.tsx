@@ -53,8 +53,8 @@ const UserCopy = ({ username }: UserCopyProps) => {
   const handleShare = () => {
     if (navigator.share) {
       navigator.share({
-        title: 'WebShare API Demo',
-        url: 'https://codepen.io/ayoisaiah/pen/YbNazJ'
+        title: 'Slam: comparte tu usuario',
+        text: currentUsername
       })
         .then(() => {
           console.log("Shared successfully")
