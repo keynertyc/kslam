@@ -1,8 +1,11 @@
 import MainContent from "@/components/panel/mainContent"
 
 const PanelPage = () => {
-  return ( 
-    <MainContent />
+  return (
+    <>
+      {/* @ts-expect-error Server Component */}
+      <MainContent />
+    </>
   )
 }
 
