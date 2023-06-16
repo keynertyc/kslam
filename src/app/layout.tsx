@@ -5,7 +5,7 @@ import DeviceDetect from '@/components/deviceDetect'
 
 export const metadata = {
   title: 'KSLAM',
-  description: 'El Clásico juego de Adolecentes',
+  description: 'El clásico juego de adolescentes',
   viewport: 'width=device-width,user-scalable=no'
 }
 

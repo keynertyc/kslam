@@ -54,7 +54,7 @@ const UserCopy = ({ username }: UserCopyProps) => {
     if (navigator.share) {
       navigator.share({
         title: 'SLAM: Comparte tu usuario',
-        text: `SLAM: Hola, mi nombre de usuario es ${currentUsername} . Diviértete con tus amigos en https://bit.ly/443Ey1v`,
+        text: `Hola, envíame una invitación para llenar tu SLAM, mi nombre de usuario es ${currentUsername} . Diviértete con tus amigos en https://bit.ly/443Ey1v`,
       })
         .then(() => {
           console.log("Shared successfully")
