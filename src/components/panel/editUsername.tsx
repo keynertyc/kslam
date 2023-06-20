@@ -1,5 +1,5 @@
 import { Save } from 'lucide-react'
-import React, { useState } from 'react'
+import React from 'react'
 
 interface EditUsernameProps {
   setUsername: (username: string) => void
